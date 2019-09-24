@@ -32,8 +32,6 @@ def create_map(lst): #Creating a dictionary of negation phrases for faster looku
 
 negations = pd.read_csv('negex_triggers.txt', sep ='\t\t', names=["Negation Phrase","Type"])
 
-#if you feel like looking up how negations
-
 #Extracting prenegation and postnegation phrases from the annotation file
 pren_phrases = list(negations[negations["Type"]=="[PREN]"]["Negation Phrase"])
 post_phrases= list(negations[negations["Type"]=="[POST]"]["Negation Phrase"])
@@ -47,7 +45,6 @@ post_dictionary = create_map(post_phrases)
 #Loading the data from which information is to be extracted
 sentences = pd.read_csv('sentences.txt', sep ='\t')
 #print sentences.columns
-
 
 
 #Creating new columns to add our findings later on
@@ -110,7 +107,6 @@ for index, row in sentences.iterrows():
     #in actual application
 
 
-
     for pos in range(len(sentence_words)):
         if sentence_words[pos]=="[PREN]":
 
@@ -135,8 +131,7 @@ for index, row in sentences.iterrows():
                     if len(string):
                         sentences.at[index,'Extracted Findings'] = "[pre NEGATED]" + string[0]
                         sentences.at[index,'Extracted_Result'] = "Negated"
-
-
+                        
 
     #Identifying the POST negations in the sentence
 
@@ -180,6 +175,7 @@ for index, row in sentences.iterrows():
                         sentences.at[index,'Extracted Findings'] = "[pos NEGATED]" + string[0]
                         sentences.at[index,'Extracted_Result'] = "Negated"
 
+                        
 #Comparing the acutal results and extracted results
 print sentences
 
@@ -192,18 +188,11 @@ predicted_negation_actually_true = predicted[predicted.Negation== "Negated"]
 predicted_negation_actually_true_count = predicted_negation_actually_true.shape[0]
 
 
-
-
-
-
 actual = sentences[sentences.Negation == "Negated"]
 total_negations = actual.shape[0]
 
 
 print predicted_negations, total_negations
-
-
-
 print "Recall in detecting negations:", predicted_negations/float(total_negations)
 print "Precision in detecting negations", float(predicted_negation_actually_true_count)/predicted_negations
 
