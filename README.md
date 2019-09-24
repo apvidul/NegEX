@@ -11,10 +11,10 @@ https://reader.elsevier.com/reader/sd/pii/S1532046401910299?token=940777A032D47A
 
 4)The test data to eavluate this tool is obtained from https://github.com/apvidul/negex/blob/master/negex.python/Annotations-1-120.txt <br>
 
-# Results
-Precision in identifying negations in the sentences = 0.961
-Recall in indentifying negations in the entire test data = 0.729
-Evaluation of the entire system:  (precision,recall,fscore) =(0.9440791925594441, 0.8468962282461021, 0.8847802452721746) <br>
+# Results<br>
+-Precision in identifying negations in the sentences = 0.961<br>
+-Recall in indentifying negations in the entire test data = 0.729<br>
+-Evaluation of the entire system:  (precision,recall,fscore) =(0.9440791925594441, 0.8468962282461021, 0.8847802452721746) <br>
 
 5)The tool can be improved by adding additonaly types of negations terms, tuning the window size, adding new negation terms/patterns<br>
 
