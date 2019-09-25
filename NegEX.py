@@ -13,12 +13,13 @@ import re
 import csv
 import pandas as pd
 import numpy as np
+
 from sklearn.metrics import precision_recall_fscore_support
 
 def create_map(lst): #Creating a dictionary of negation phrases for faster lookup
     dictionary = {}
     for item in lst:
-        words = item.split(" ")
+        words = item.split()
         if words[0] in dictionary:
             dictionary[words[0]].append(item)
         else:
@@ -31,6 +32,8 @@ def create_map(lst): #Creating a dictionary of negation phrases for faster looku
 #Laoding the different kind of negation phrases
 
 negations = pd.read_csv('negex_triggers.txt', sep ='\t\t', names=["Negation Phrase","Type"])
+
+#if you feel like looking up how negations
 
 #Extracting prenegation and postnegation phrases from the annotation file
 pren_phrases = list(negations[negations["Type"]=="[PREN]"]["Negation Phrase"])
@@ -45,6 +48,7 @@ post_dictionary = create_map(post_phrases)
 #Loading the data from which information is to be extracted
 sentences = pd.read_csv('sentences.txt', sep ='\t')
 #print sentences.columns
+
 
 
 #Creating new columns to add our findings later on
@@ -64,7 +68,7 @@ dic["[PHRASE]"] = 1
 
 #window size determins how many tokens you want to look ahead or lookback
 #The orginial paper metnions a window size of 5
-window_size = 5
+window_size = 8
 
 #Iterationg through the dataframe/table row by row
 for index, row in sentences.iterrows():
@@ -85,7 +89,7 @@ for index, row in sentences.iterrows():
     phrase = row['Concept'].lower()
     sentence = row['Sentence'].lower()
 
-    sentence_words = sentence.split(" ")
+    sentence_words = sentence.split()
 
     #Identifying phrases in the sentence
 
@@ -101,10 +105,12 @@ for index, row in sentences.iterrows():
                 sentence =sentence.replace(phrase,"[PREN]" +" "+phrase+ " "+ "[PREN] ")
 
 
-    sentence_words = sentence.split(" ")
+    sentence_words = sentence.split()
 
     #Extracting the next tokens in the window size to look for PHRASES/UMLS terms
     #in actual application
+
+
 
 
     for pos in range(len(sentence_words)):
@@ -125,13 +131,15 @@ for index, row in sentences.iterrows():
                     #the PREN negation tag.
                     sub_string =" ".join(sentence_words[pos:])
 
-                    pattern = r"\[PHRASE\](.*?)\[PHRASE\]"
+                    pattern = r"\[PHRASE\](.*)\[PHRASE\]"
                     string = re.findall(pattern, sub_string, flags=0)
 
                     if len(string):
+
                         sentences.at[index,'Extracted Findings'] = "[pre NEGATED]" + string[0]
                         sentences.at[index,'Extracted_Result'] = "Negated"
-                        
+
+
 
     #Identifying the POST negations in the sentence
 
@@ -146,9 +154,9 @@ for index, row in sentences.iterrows():
     #the POST negations
     #print sentence
 
-    sentence_words = sentence.split(" ")
+    sentence_words = sentence.split()
 
-
+    print sentence
 
     for pos in range(len(sentence_words)):
         if sentence_words[pos]=="[POST]":
@@ -166,35 +174,46 @@ for index, row in sentences.iterrows():
             for word in words:
                 if word in dic:
                     sub_string =" ".join(sentence_words[:pos])
-                    print sub_string
 
 
-                    pattern = r"\[PHRASE\](.*?)\[PHRASE\]"
+
+                    pattern = r"\[PHRASE\](.*)\[PHRASE\]"
                     string = re.findall(pattern, sub_string, flags=0)
                     if len(string):
                         sentences.at[index,'Extracted Findings'] = "[pos NEGATED]" + string[0]
                         sentences.at[index,'Extracted_Result'] = "Negated"
 
-                        
 #Comparing the acutal results and extracted results
-print sentences
+#print sentences
 
+sentences.to_csv('Results.txt', header=True, index=False, sep='\t')
 
 
 #Results
 predicted =  sentences[sentences.Extracted_Result == "Negated"]
 predicted_negations = predicted.shape[0]
-predicted_negation_actually_true = predicted[predicted.Negation== "Negated"]
-predicted_negation_actually_true_count = predicted_negation_actually_true.shape[0]
+
+filter1 = sentences.Extracted_Result == "Negated"
+filter2 = sentences.Negation == sentences.Extracted_Result
 
 
-actual = sentences[sentences.Negation == "Negated"]
-total_negations = actual.shape[0]
+compare = sentences.where(filter1 & filter2, inplace = False)
+compare = compare.dropna()
+print compare
+
+predicted_negation_actually_true_count = len(compare)
+
+actual_negations = sentences[sentences.Negation == "Negated"]
+actual_negation_count = actual_negations.shape[0]
+
+print "The total number of negations in the dataset", actual_negation_count
+print "The total number of predicted negations ", predicted_negations
+print "The total number of predicted negations that are actually negations", predicted_negation_actually_true_count
 
 
-print predicted_negations, total_negations
-print "Recall in detecting negations:", predicted_negations/float(total_negations)
-print "Precision in detecting negations", float(predicted_negation_actually_true_count)/predicted_negations
+print "Precision in detecting negations", predicted_negation_actually_true_count/float(predicted_negations)
+print "Recall in detecting negations:", predicted_negation_actually_true_count/float(actual_negation_count)
+
 
 y_true = np.array(sentences["Negation"])
 y_pred = np.array(sentences["Extracted_Result"])
