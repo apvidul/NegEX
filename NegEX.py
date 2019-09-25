@@ -210,9 +210,13 @@ print "The total number of negations in the dataset", actual_negation_count
 print "The total number of predicted negations ", predicted_negations
 print "The total number of predicted negations that are actually negations", predicted_negation_actually_true_count
 
+precision =  predicted_negation_actually_true_count/float(predicted_negations)
+recall = predicted_negation_actually_true_count/float(actual_negation_count)
 
-print "Precision in detecting negations", predicted_negation_actually_true_count/float(predicted_negations)
-print "Recall in detecting negations:", predicted_negation_actually_true_count/float(actual_negation_count)
+print "Precision in detecting negations", precision
+print "Recall in detecting negations:", recall
+
+print "F1 score", (2*(precision*recall))/(precision + recall )
 
 
 y_true = np.array(sentences["Negation"])
