@@ -1,5 +1,8 @@
 # Simplified NegEX using Dictionaries
 
+Requires: Pandas, Numpy and Sklearn
+
+
 1)This script was written based on the paper "A Simple Algorithm for Identifying Negated Findings and Diseasesin Discharge Summaries" to identify negations in a sentence.<br>
 https://reader.elsevier.com/reader/sd/pii/S1532046401910299?token=940777A032D47A94085A07AE082116AAADE764F565DFBACB6E04FB7B094227496565FD5478E0BCBBD59EB5814F0369D8
 
