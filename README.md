@@ -12,7 +12,7 @@ There are two types of negation phrases that are handled by the script:
 
 ## Test Data
 
-The script's evaluation and testing were performed using data obtained from the repository: [Annotations-1-120.txt](https://github.com/apvidul/negex/blob/master/negex.python/Annotations-1-120.txt).
+The script's evaluation and testing were performed using [Sentences.txt](https://github.com/apvidul/NegEX/blob/master/sentences.txt).
 
 ## Results
 
