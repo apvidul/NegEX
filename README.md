@@ -1,24 +1,44 @@
 # Simplified NegEX using Dictionaries
 
-Requires: Pandas, Numpy and Sklearn
+## Overview
 
+This script is inspired by the paper titled "A Simple Algorithm for Identifying Negated Findings and Diseases in Discharge Summaries". The primary objective is to detect negations in sentences by identifying specific negation terms and analyzing surrounding phrases. The algorithm works within a fixed window size to identify negation and then applies it to phrases within the window.
 
-1)This script was written based on the paper "A Simple Algorithm for Identifying Negated Findings and Diseases in Discharge Summaries" to identify negations in a sentence.<br>
-https://reader.elsevier.com/reader/sd/pii/S1532046401910299?token=940777A032D47A94085A07AE082116AAADE764F565DFBACB6E04FB7B094227496565FD5478E0BCBBD59EB5814F0369D8
+## Types of Negation Terms
 
-2)Identifies a neagation term in a sentence and looks for surrounging phrases within a fixed window size. We use a window size The negation is then applied to all/some the phrases surrounding the negation term <br>
+There are two types of negation phrases that are handled by the script:
+1. Negation phrase that precedes the UMLS concepts.
+2. Negation phrase that follows the UMLS concepts.
 
-3)There are different type of negation terms. Here, we deal with 2 types 
--negation phrase that preceds the UMLS terms and the negation phrase the follows UMLS terms<br>
+## Test Data
 
-4)The test data to eavluate this tool is obtained from https://github.com/apvidul/negex/blob/master/negex.python/Annotations-1-120.txt <br>
+The script's evaluation and testing were performed using data obtained from the repository: [Annotations-1-120.txt](https://github.com/apvidul/negex/blob/master/negex.python/Annotations-1-120.txt).
 
-# Results<br>
--Precision for negation detection = 0.932<br>
--Recall in negation detection = 0.951<br>
--F1 score of the negation detection = 0.941<br>
--Evaluation of the entire system:  (precision,recall,fscore) =(0.959, 0.966, 0.963) <br>
+## Results
 
-5)The tool can be improved by adding adding more types of negations terms, tuning the window size, adding new negation terms/patterns<br>
+The script's performance is as follows:
+- Precision for negation detection: 0.932
+- Recall in negation detection: 0.951
+- F1 score of the negation detection: 0.941
+- Overall system evaluation:
+  - Precision: 0.959
+  - Recall: 0.966
+  - F1 score: 0.963
 
-6)The output can be viewed at Results.txt
+## Future Improvements
+
+The tool can be enhanced by:
+- Incorporating additional types of negation terms.
+- Tuning the window size for better accuracy.
+- Adding new negation terms or patterns to increase coverage.
+
+## Usage
+
+1. Install the required dependencies: Pandas, Numpy, and Sklearn.
+2. Run the NegEx.py script to identify negations and analyze surrounding phrases.
+3. View the output in `Results.txt`.
+
+## References
+
+- Original Paper: ["A Simple Algorithm for Identifying Negated Findings and Diseases in Discharge Summaries"](https://reader.elsevier.com/reader/sd/pii/S1532046401910299?token=940777A032D47A94085A07AE082116AAADE764F565DFBACB6E04FB7B094227496565FD5478E0BCBBD59EB5814F0369D8)
+
